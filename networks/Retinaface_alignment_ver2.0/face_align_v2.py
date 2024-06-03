@@ -12,6 +12,7 @@ import cv2
 from models.retinaface import RetinaFace
 from utils.box_utils import decode, decode_landm
 from skimage import transform as trans
+
 parser = argparse.ArgumentParser(description='Retinaface')
 
 parser.add_argument('-m', '--trained_model', default='./weights/mobilenet0.25_Final.pth',
@@ -29,18 +30,24 @@ dataset_folder = './data/fer_org/rafdb/train/'
 dst_folder = "./data/fer_112_112_v2.0/rafdb/train/"
 
 #-->left profile
-src1 = np.array([[55.550, 49.477], [62.116, 49.339],  [38.075, 70.237], [55.017, 92.262], [61.466, 92.979]], dtype=np.float32)
-#<--left                
-src2 = np.array([[47.241, 48.598], [72.887, 49.540],  [40.555, 71.067], [47.423, 93.643], [71.236, 94.353]], dtype=np.float32)
-#---frontal                                                                                               
-src3 = np.array([[33.566, 40.559], [78.321, 40.559],  [55.338, 64.967], [38.479, 90.276], [73.591, 90.276]], dtype=np.float32)
+src1 = np.array([[55.550, 49.477], [62.116, 49.339], [38.075, 70.237], [55.017, 92.262], [61.466, 92.979]],
+                dtype=np.float32)
+#<--left
+src2 = np.array([[47.241, 48.598], [72.887, 49.540], [40.555, 71.067], [47.423, 93.643], [71.236, 94.353]],
+                dtype=np.float32)
+#---frontal
+src3 = np.array([[33.566, 40.559], [78.321, 40.559], [55.338, 64.967], [38.479, 90.276], [73.591, 90.276]],
+                dtype=np.float32)
 #-->right
-src4 = np.array([[39.516, 49.540], [65.162, 48.598],  [71.849, 71.067], [41.167, 94.353], [64.980, 93.643]], dtype=np.float32)
+src4 = np.array([[39.516, 49.540], [65.162, 48.598], [71.849, 71.067], [41.167, 94.353], [64.980, 93.643]],
+                dtype=np.float32)
 #-->right profile
-src5 = np.array([[50.225, 49.339], [56.791, 49.477],  [74.266, 70.237], [50.875, 92.979], [65.317, 92.262]], dtype=np.float32)
+src5 = np.array([[50.225, 49.339], [56.791, 49.477], [74.266, 70.237], [50.875, 92.979], [65.317, 92.262]],
+                dtype=np.float32)
 
 src = np.array([src1, src2, src3, src4, src5])
-src_map = {112: src, 224: src * 2} 
+src_map = {112: src, 224: src * 2}
+
 
 # lmk is prediction; src is template
 def estimate_norm(lmk, image_size=112):
@@ -57,7 +64,7 @@ def estimate_norm(lmk, image_size=112):
         M = tform.params[0:2, :]
         results = np.dot(M, lmk_tran.T)
         results = results.T
-        error = np.sum(np.sqrt(np.sum((results - src[i])**2, axis=1)))
+        error = np.sum(np.sqrt(np.sum((results - src[i]) ** 2, axis=1)))
         #         print(error)
         if error < min_error:
             min_error = error
@@ -65,10 +72,12 @@ def estimate_norm(lmk, image_size=112):
             min_index = i
     return min_M, min_index
 
+
 def norm_crop(img, landmark, image_size=112):
-  M, pose_index = estimate_norm(landmark, image_size)
-  warped = cv2.warpAffine(img,M, (image_size, image_size), borderValue = 0.0)
-  return warped
+    M, pose_index = estimate_norm(landmark, image_size)
+    warped = cv2.warpAffine(img, M, (image_size, image_size), borderValue=0.0)
+    return warped
+
 
 def check_keys(model, pretrained_state_dict):
     ckpt_keys = set(pretrained_state_dict.keys())
@@ -82,11 +91,13 @@ def check_keys(model, pretrained_state_dict):
     assert len(used_pretrained_keys) > 0, 'load NONE from pretrained checkpoint'
     return True
 
+
 def remove_prefix(state_dict, prefix):
     ''' Old style model is stored with all names of parameters sharing common prefix 'module.' '''
     print('remove prefix \'{}\''.format(prefix))
     f = lambda x: x.split(prefix, 1)[-1] if x.startswith(prefix) else x
     return {f(key): value for key, value in state_dict.items()}
+
 
 def load_model(model, pretrained_path, load_to_cpu):
     print('Loading pretrained model from {}'.format(pretrained_path))
@@ -103,21 +114,23 @@ def load_model(model, pretrained_path, load_to_cpu):
     model.load_state_dict(pretrained_dict, strict=False)
     return model
 
-if __name__ == '__main__':
+
+def execute(network: str, trained_model: str, cpu: bool, confidence_threshold: float,
+            top_k: int, nms_threshold: float, vis_thres: float):
     torch.set_grad_enabled(False)
     cfg = None
-    if args.network == "mobile0.25":
+    if network == "mobile0.25":
         cfg = cfg_mnet
-    elif args.network == "resnet50":
+    elif network == "resnet50":
         cfg = cfg_re50
     # net and model
-    net = RetinaFace(cfg=cfg, phase = 'test')
-    net = load_model(net, args.trained_model, args.cpu)
+    net = RetinaFace(cfg=cfg, phase='test')
+    net = load_model(net, trained_model, cpu)
     net.eval()
     print('Finished loading model!')
     print(net)
     cudnn.benchmark = True
-    device = torch.device("cpu" if args.cpu else "cuda")
+    device = torch.device("cpu" if cpu else "cuda")
     net = net.to(device)
 
     if not os.path.exists(dst_folder):
@@ -130,41 +143,41 @@ if __name__ == '__main__':
     for sub_folder in os.listdir(dataset_folder):
         sub_dir = os.path.join(dataset_folder, sub_folder)
 
-        if (os.path.isfile(sub_dir)):
+        if os.path.isfile(sub_dir):
             continue
-        
+
         for sub_folder_1 in os.listdir(sub_dir):
             sub_dir_1 = os.path.join(sub_dir, sub_folder_1)
-            if (os.path.isfile(sub_dir_1)):
+            if os.path.isfile(sub_dir_1):
                 continue
             files = os.listdir(sub_dir_1)
-            
-            for img_file_name in files:            
+
+            for img_file_name in files:
                 relative_path = os.path.join(sub_dir_1, img_file_name)
                 file_relative_path = os.path.join(sub_folder_1, img_file_name)
-            
-                org_img_file_name = img_file_name            
-            
+
+                org_img_file_name = img_file_name
+
                 dst_sub_folder = os.path.join(dst_folder, sub_folder_1)
                 if not os.path.exists(dst_sub_folder):
                     os.makedirs(dst_sub_folder)
 
-                if relative_path.endswith(('jpg','JPG','png','jpeg','bmp','PNG','JPEG')):
-                    dst_image_folder =os.path.join(dst_folder, sub_folder_1)
+                if relative_path.endswith(('jpg', 'JPG', 'png', 'jpeg', 'bmp', 'PNG', 'JPEG')):
+                    dst_image_folder = os.path.join(dst_folder, sub_folder_1)
                     if not os.path.exists(dst_image_folder):
-                        os.makedirs(dst_image_folder)                
+                        os.makedirs(dst_image_folder)
                     org_img = cv2.imread(relative_path, cv2.IMREAD_COLOR)
-                    img_raw = org_img           
-            
+                    img_raw = org_img
+
                     img = np.float32(img_raw)
                     try:
                         org_height = img_raw.shape[0]
                         org_width = img_raw.shape[1]
                     except:
                         print(relative_path)
-                        continue            
-            
-                    # testing scale
+                        continue
+
+                        # testing scale
                     long_size = 320
                     im_shape = img.shape
                     im_size_min = np.min(im_shape[0:2])
@@ -172,7 +185,7 @@ if __name__ == '__main__':
                     resize = float(long_size) / float(im_size_min)
                     if np.round(resize * im_size_max) > long_size:
                         resize = float(long_size) / float(im_size_max)
-            
+
                     if resize != 1:
                         img = cv2.resize(img, None, None, fx=resize, fy=resize, interpolation=cv2.INTER_LINEAR)
                     im_height = img.shape[0]
@@ -183,7 +196,7 @@ if __name__ == '__main__':
                     img = torch.from_numpy(img).unsqueeze(0)
                     img = img.to(device)
                     scale = scale.to(device)
-            
+
                     loc, conf, landms = net(img)  # forward pass
 
                     priorbox = PriorBox(cfg, image_size=(im_height, im_width))
@@ -192,52 +205,52 @@ if __name__ == '__main__':
                     boxes = decode(loc.data.squeeze(0), prior_data, cfg['variance'])
                     boxes = boxes * scale / resize
                     boxes = boxes.cpu().numpy()
-                    
+
                     scores = conf.squeeze(0).data.cpu().numpy()[:, 1]
-                    
+
                     landms = decode_landm(landms.data.squeeze(0), prior_data, cfg['variance'])
-                    
+
                     scale1_size = torch.Tensor([img.shape[3], img.shape[2], img.shape[3], img.shape[2],
-                                   img.shape[3], img.shape[2], img.shape[3], img.shape[2],
-                                   img.shape[3], img.shape[2]]).to(device)
+                                                img.shape[3], img.shape[2], img.shape[3], img.shape[2],
+                                                img.shape[3], img.shape[2]]).to(device)
 
                     landms = landms * scale1_size / resize
                     landms = landms.cpu().numpy()
-            
+
                     # ignore low scores
-                    inds = np.where(scores > args.confidence_threshold)[0]
+                    inds = np.where(scores > confidence_threshold)[0]
                     boxes = boxes[inds]
                     landms = landms[inds]
                     scores = scores[inds]
-            
-                  # keep top-K before NMS
-                    order = scores.argsort()[::-1][:args.top_k]
+
+                    # keep top-K before NMS
+                    order = scores.argsort()[::-1][:top_k]
                     boxes = boxes[order]
                     landms = landms[order]
                     scores = scores[order]
-            
-                   # do NMS
+
+                    # do NMS
                     dets = np.hstack((boxes, scores[:, np.newaxis])).astype(np.float32, copy=False)
-                    keep = py_cpu_nms(dets, args.nms_threshold)
+                    keep = py_cpu_nms(dets, nms_threshold)
                     dets = dets[keep, :]
                     landms = landms[keep]
-            
+
                     dets = np.concatenate((dets, landms), axis=1)
-                    if(dets.shape[0] <= 0):
-                        print('not face in '+relative_path)
-                        crop_im2 = cv2.resize(org_img, (112, 112), interpolation=cv2.INTER_LINEAR)                        
+                    if (dets.shape[0] <= 0):
+                        print('not face in ' + relative_path)
+                        crop_im2 = cv2.resize(org_img, (112, 112), interpolation=cv2.INTER_LINEAR)
                         dst_file_name = os.path.splitext(org_img_file_name)[0]
-                        dst_img_file = os.path.join(dst_image_folder,dst_file_name+'.jpg')
+                        dst_img_file = os.path.join(dst_image_folder, dst_file_name + '.jpg')
                         cv2.imwrite(dst_img_file, crop_im2)
                         count = count + 1
-                        continue 
-                    
+                        continue
+
                     for b in dets:
-                        if b[4] < args.vis_thres:
+                        if b[4] < vis_thres:
                             continue
-                       # text = "{:.4f}".format(b[4])
+                        # text = "{:.4f}".format(b[4])
                         b = list(map(int, b))
-            
+
                         left_eye_x = b[5]
                         right_eye_x = b[7]
                         nose_x = b[9]
@@ -248,21 +261,25 @@ if __name__ == '__main__':
                         nose_y = b[10]
                         left_mouth_y = b[12]
                         right_mouth_y = b[14]
-                                          
-                        face_landmarks = np.array([[left_eye_x,left_eye_y], 
-                                          [right_eye_x,right_eye_y],
-                                          [nose_x,nose_y],
-                                          [left_mouth_x,left_mouth_y],
-                                          [right_mouth_x,right_mouth_y] ], dtype=np.float32 )                                     
-            
-                        dst2  = norm_crop(org_img,face_landmarks)
-                        
+
+                        face_landmarks = np.array([[left_eye_x, left_eye_y],
+                                                   [right_eye_x, right_eye_y],
+                                                   [nose_x, nose_y],
+                                                   [left_mouth_x, left_mouth_y],
+                                                   [right_mouth_x, right_mouth_y]], dtype=np.float32)
+
+                        dst2 = norm_crop(org_img, face_landmarks)
+
                         dst_file_name = os.path.splitext(org_img_file_name)[0]
-                        dst_img_file = os.path.join(dst_image_folder,dst_file_name+'.jpg')
- 
+                        dst_img_file = os.path.join(dst_image_folder, dst_file_name + '.jpg')
+
                         cv2.imwrite(dst_img_file, dst2)
 
                         count = count + 1
-                        break                    
-print('done')
-print(count)  
+                        break
+
+
+if __name__ == '__main__':
+    execute(args.network, args.trained_model, args.cpu, args.confidence_threshold,
+            args.top_k, args.nms_threshold, args.vis_thres)
+    print('done')
