@@ -219,14 +219,14 @@ def run_training():
                 torch.save({'iter': epoch,
                             'model_state_dict': model.state_dict(),
                              'optimizer_state_dict': optimizer.state_dict(),},
-                           os.path.join('checkpoints_ver2.0', "affecnet7_epoch" + str(epoch) + "_acc" + str(acc) + ".pth"))
+                           os.path.join('checkpoints_ver2', "affecnet7_epoch" + str(epoch) + "_acc" + str(acc) + ".pth"))
                 tqdm.write('Model saved.')
 
             elif args.num_class == 8 and  acc > 0.64:
                 torch.save({'iter': epoch,
                             'model_state_dict': model.state_dict(),
                              'optimizer_state_dict': optimizer.state_dict(),},
-                           os.path.join('checkpoints_ver2.0', "affecnet8_epoch" + str(epoch) + "_acc" + str(acc) + ".pth"))
+                           os.path.join('checkpoints_ver2', "affecnet8_epoch" + str(epoch) + "_acc" + str(acc) + ".pth"))
                 tqdm.write('Model saved.')
         scheduler.step()        
 if __name__ == "__main__":                    

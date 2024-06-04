@@ -242,7 +242,7 @@ def run_training():
                 torch.save({'iter': epoch,
                             'model_state_dict': model.state_dict(),
                              'optimizer_state_dict': optimizer.state_dict(),},
-                           os.path.join('checkpoints_ver2.0', "rafdb_epoch" + str(epoch) + "_acc" + str(acc) + "_bacc" + str(balanced_acc) + ".pth"))
+                           os.path.join('checkpoints_ver2', "rafdb_epoch" + str(epoch) + "_acc" + str(acc) + "_bacc" + str(balanced_acc) + ".pth"))
                 tqdm.write('Model saved.')
                 
                 # Compute confusion matrix
@@ -252,7 +252,7 @@ def run_training():
                 # Plot normalized confusion matrix
                 plot_confusion_matrix(matrix, classes=class_names, normalize=True, title= 'RAF-DB Confusion Matrix (acc: %0.2f%%)' %(acc*100))
                  
-                plt.savefig(os.path.join('checkpoints_ver2.0', "rafdb_epoch" + str(epoch) + "_acc" + str(acc) + "_bacc" + str(balanced_acc) + ".png"))
+                plt.savefig(os.path.join('checkpoints_ver2', "rafdb_epoch" + str(epoch) + "_acc" + str(acc) + "_bacc" + str(balanced_acc) + ".png"))
                 plt.close()
         
 if __name__ == "__main__":        
