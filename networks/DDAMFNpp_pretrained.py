@@ -10,7 +10,7 @@ class UpdatedDDAMNet(DDAMNet):
         super(UpdatedDDAMNet, self).__init__(num_class=num_class, num_head=num_head, pretrained=False)
         if pretrained_path:
             # Load the pretrained MixedFeatureNet model
-            mixed_feature_net = torch.load(pretrained_path, map_location='cpu')
+            mixed_feature_net = torch.load(pretrained_path, map_location='cuda' if torch.cuda.is_available() else 'cpu')
             if isinstance(mixed_feature_net, MixedFeatureNet):
                 self.features = nn.Sequential(*list(mixed_feature_net.children())[:-4])
             else:

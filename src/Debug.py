@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 import torch
 from PIL import Image
@@ -17,18 +18,21 @@ def test_full():
 
 
 def test_img():
-    img = Image.open("data/test.jpg")
+    img = cv2.imread("data/test.jpg")
+    print("test shape:", img.shape)
     face_tensor = transform_stack(img)
-    face_tensor = face_tensor.unsqueeze(0)
+    print("test cropped shape:", face_tensor.shape)
     save_image(face_tensor, "data/test_transformed.jpg")
     return face_tensor
 
 
 def test_model(img: Image):
-    model = DDAMFNppRAFDB()
+    model1 = DDAMFNppRAFDB()
+    model2 = DDAMFNppAffectnet7()
     with torch.no_grad():
-        outputs, _, _ = model(img)
-    return outputs
+        outputs1, _, _ = model1(img)
+        outputs2, _, _ = model2(img)
+    return outputs1
 
 
 def plot_results(outputs: torch.Tensor):

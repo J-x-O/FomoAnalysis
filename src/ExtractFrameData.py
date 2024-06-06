@@ -24,6 +24,7 @@ def write_frame_data(workdir: str, video_name: str):
     success, image = vidcap.read()
     count = 0
     while success:
+        print(f"--- {count} ---")
         cropped = transform_stack(image)
         for model_name, model in models.items():
             with torch.no_grad():
