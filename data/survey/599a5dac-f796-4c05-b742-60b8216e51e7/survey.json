@@ -1,0 +1,160 @@
+{
+  "demographic": {
+    "age": 25,
+    "gender": "female"
+  },
+  "bias": {
+    "fear": 6,
+    "anger": 5,
+    "disgust": 6,
+    "happiness": 3,
+    "sadness": 2,
+    "surprise": 4
+  },
+  "videos": [
+    {
+      "videoID": "Disgust_1_0235",
+      "videoFileName": "1_0235.mp4",
+      "valance": 2,
+      "arousal": 5,
+      "intensity": 6,
+      "category": "disgust"
+    },
+    {
+      "videoID": "Surprise_4_1436",
+      "videoFileName": "4_1436.mp4",
+      "valance": 4,
+      "arousal": 5,
+      "intensity": 2,
+      "category": "happiness"
+    },
+    {
+      "videoID": "Disgust_10_1907",
+      "videoFileName": "10_1907.mp4",
+      "valance": 2,
+      "arousal": 5,
+      "intensity": 6,
+      "category": "disgust"
+    },
+    {
+      "videoID": "Disgust_3_0876",
+      "videoFileName": "3_0876.mp4",
+      "valance": 4,
+      "arousal": 4,
+      "intensity": 2,
+      "category": "neutral"
+    },
+    {
+      "videoID": "Sadness_2_1259",
+      "videoFileName": "2_1259.mp4",
+      "valance": 4,
+      "arousal": 2,
+      "intensity": 1,
+      "category": "neutral"
+    },
+    {
+      "videoID": "Fear_3_0025",
+      "videoFileName": "3_0025.mp4",
+      "valance": 5,
+      "arousal": 6,
+      "intensity": 5,
+      "category": "surprise"
+    },
+    {
+      "videoID": "Anger_7_0414",
+      "videoFileName": "7_0414.mp4",
+      "valance": 2,
+      "arousal": 6,
+      "intensity": 5,
+      "category": "fear"
+    },
+    {
+      "videoID": "Surprise_9_1899",
+      "videoFileName": "9_1899.mp4",
+      "valance": 5,
+      "arousal": 6,
+      "intensity": 6,
+      "category": "surprise"
+    },
+    {
+      "videoID": "Anger_8_0971",
+      "videoFileName": "8_0971.mp4",
+      "valance": 4,
+      "arousal": 5,
+      "intensity": 3,
+      "category": "fear"
+    },
+    {
+      "videoID": "Sadness_8_0226",
+      "videoFileName": "8_0226.mp4",
+      "valance": 2,
+      "arousal": 6,
+      "intensity": 5,
+      "category": "sadness"
+    },
+    {
+      "videoID": "Joy_3_2034",
+      "videoFileName": "3_2034.mp4",
+      "valance": 6,
+      "arousal": 5,
+      "intensity": 5,
+      "category": "happiness"
+    },
+    {
+      "videoID": "Anger_13_1026",
+      "videoFileName": "13_1026.mp4",
+      "valance": 3,
+      "arousal": 4,
+      "intensity": 5,
+      "category": "sadness"
+    },
+    {
+      "videoID": "Joy_9_1363",
+      "videoFileName": "9_1363.mp4",
+      "valance": 6,
+      "arousal": 5,
+      "intensity": 5,
+      "category": "happiness"
+    },
+    {
+      "videoID": "Joy_1_1032",
+      "videoFileName": "1_1032.mp4",
+      "valance": 5,
+      "arousal": 5,
+      "intensity": 6,
+      "category": "happiness"
+    },
+    {
+      "videoID": "Sadness_12_1587",
+      "videoFileName": "12_1587.mp4",
+      "valance": 4,
+      "arousal": 5,
+      "intensity": 4,
+      "category": "surprise"
+    },
+    {
+      "videoID": "Surprise_1_0976",
+      "videoFileName": "1_0976.mp4",
+      "valance": 4,
+      "arousal": 2,
+      "intensity": 2,
+      "category": "surprise"
+    },
+    {
+      "videoID": "Fear_0_1375",
+      "videoFileName": "0_1375.mp4",
+      "valance": 3,
+      "arousal": 5,
+      "intensity": 3,
+      "category": "fear"
+    },
+    {
+      "videoID": "Fear_7_1779",
+      "videoFileName": "7_1779.mp4",
+      "valance": 3,
+      "arousal": 5,
+      "intensity": 4,
+      "category": "fear"
+    }
+  ]
+}
