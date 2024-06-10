@@ -1,8 +1,5 @@
-import pandas as pd
-
 from src.DataConversion import load_survey_objects, compile_bias, compile_questionnaire, retrieve_compiled_video_logs
 from src.Graphs import *
-from src.VideoUtil import get_all_frame_rates, VideoTarget, get_frame_rate, average_frame_rates
 
 
 def do_stuff():

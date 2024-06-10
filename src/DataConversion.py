@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from tqdm import tqdm
 
-from src.ExtractFrameData import load_combined_frame_data
+from src.FrameData import load_combined_frame_data
 from src.VideoUtil import VideoTarget
 
 

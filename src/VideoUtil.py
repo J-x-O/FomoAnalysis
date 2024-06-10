@@ -1,11 +1,8 @@
 import os
-import subprocess
-from typing import Union
 
 import cv2
 import numpy as np
 import pandas as pd
-from moviepy.video.io.VideoFileClip import VideoFileClip
 from tqdm import tqdm
 
 

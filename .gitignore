@@ -2,3 +2,4 @@
 data/compiled_video_logs.csv
 data/videos
 __pycache__
+.idea

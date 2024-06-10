@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import pandas as pd
+import seaborn as sns
 import torch
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -7,7 +9,7 @@ from torchvision.utils import save_image
 
 from networks.DDAMFNpp_affectnet7 import DDAMFNppAffectnet7
 from networks.DDAMFNpp_rafdb import DDAMFNppRAFDB
-from src.Consts import classes
+from src.Consts import emotion_classes
 from src.RetinaFaceAlign import transform_stack
 from src.VideoUtil import FrameIterator, VideoTarget, find_all_videos
 
@@ -44,12 +46,17 @@ def test_model(img: Image):
     return outputs1
 
 
+def paint_frame_data(data: pd.DataFrame):
+    sns.lineplot(data=data, x="frame", y="value", hue="axis")
+    plt.show()
+
+
 def plot_results(outputs: torch.Tensor):
     probabilities = torch.nn.functional.softmax(outputs, dim=1).cpu().numpy()
 
     plt.figure(figsize=(10, 5))
-    plt.bar(np.arange(len(classes)), probabilities[0], align='center', alpha=0.7)
-    plt.xticks(np.arange(len(classes)), classes, rotation=45)
+    plt.bar(np.arange(len(emotion_classes)), probabilities[0], align='center', alpha=0.7)
+    plt.xticks(np.arange(len(emotion_classes)), emotion_classes, rotation=45)
     plt.xlabel('Emotion')
     plt.ylabel('Probability')
     plt.title('Emotion Prediction Probabilities')

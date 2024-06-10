@@ -104,9 +104,31 @@ def plot_pre_reaction() -> Axes:
     # df = df.loc[df.groupby(["participant", "watched_video", "frame"])['value'].idxmax()]
     return sns.lmplot(data=df, x="time_stamp", y="value", col="axis", hue="model", scatter_kws={"s": 20, "alpha": 0.1, "edgecolors": 'none'})
 
+def plot_all_reaction_fill() -> FacetGrid:
+    df = retrieve_compiled_video_logs()
+    df = df[df["time_stamp"] < 8]
+    g = sns.displot(data=df, x="time_stamp", weights="value", col="model", hue="axis", kind="kde", multiple="fill", clip=(0.0, 8.0))
+    return g
+
+def plot_all_reaction_fill_by_emotion() -> FacetGrid:
+    df = retrieve_compiled_video_logs()
+    df = df[df["time_stamp"] < 8]
+    g = sns.displot(data=df, x="time_stamp", weights="value", row="model", col="category", hue="axis", kind="kde", multiple="fill", clip=(0.0, 8.0))
+    return g
+
+
+def plot_all_reaction_fill_by_original_category() -> FacetGrid:
+    df = retrieve_compiled_video_logs()
+    df = df[df["time_stamp"] < 8]
+    g = sns.displot(data=df, x="time_stamp", weights="value", row="model", col="actual_category", hue="axis", kind="kde", multiple="fill", clip=(0.0, 8.0))
+    return g
+
 
 
 all_plots = [# plot_gender_distribution, plot_age_distribution,
              # plot_confusion_matrix, plot_video_watch_count,
              # plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution,
-             plot_pre_reaction]
+             # plot_pre_reaction,
+             # plot_all_reaction_fill
+             plot_all_reaction_fill_by_original_category
+]
