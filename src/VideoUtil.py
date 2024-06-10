@@ -1,6 +1,7 @@
 import os
 
 import cv2
+import numpy as np
 from tqdm import tqdm
 
 
@@ -20,7 +21,11 @@ class VideoTarget:
         self.workdir = workdir
         self.video_name = video_name
         self.video_title = video_name.split(".")[0]
-        self.total = count_frames(f"{workdir}/{video_name}")
+        self.valid = os.path.exists(f"{workdir}/{video_name}")
+        self.total = count_frames(f"{workdir}/{video_name}") if self.valid else 0
+
+    def __str__(self):
+        return f"{self.workdir} -> {self.video_name}"
 
     @property
     def frame_count(self):
@@ -41,23 +46,30 @@ class VideoTarget:
 
 
 class FrameIterator:
-    def __init__(self, video: VideoTarget):
+    def __init__(self, video: VideoTarget, console: bool = True):
         self.vidcap = cv2.VideoCapture(video.full_path)
         self.frame = None
         self.frame_index = -1
         self.total = video.frame_count
-        self.tqdm = tqdm(total=self.total, desc=f"Extracting {video.video_title}")
+        self.tqdm = tqdm(total=self.total, desc=f"Extracting {video.video_title}", position=0) if console else None
 
     def __iter__(self):
         return self
 
     def __next__(self):
         success, self.frame = self.vidcap.read()
-        if success:
-            self.frame_index += 1
-            self.tqdm.update(1)
-            return self.frame_index, self.frame
-        self.tqdm.close()
+        if not success or np.shape(self.frame) == ():
+            self.stop()
+
+        self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+        self.frame_index += 1
+        if self.tqdm: self.tqdm.update(1)
+        return self.frame_index, self.frame
+
+
+    def stop(self):
+        if self.tqdm: self.tqdm.close()
+        self.vidcap.release()
         raise StopIteration
 
 

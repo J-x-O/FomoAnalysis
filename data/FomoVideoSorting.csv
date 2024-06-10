@@ -1,0 +1,88 @@
+Category,FileName,Rating,Content,Valid,Reason,Additional Notes
+anger,1310.mp4,0.54545,3 policemen bashing a skinny prison inmate into a wall for amusement,TRUE,,
+anger,0218.mp4,0.5,"A policemen grabing a female black student, throwing her out of her chair onto her back and dragging her away",TRUE,,
+anger,0681.mp4,0.45455,An armed policemen kicking a women who was already lying on the ground to the face,TRUE,,
+anger,1339.mp4,0.45455,"A terrorist pointing towards a tied down hostage, before blowing them to pieces using a large military device",FALSE,"Gratuious Violence
+Depictions Violating Human Dignity
+Propagandistic Content
+Depictions of Violence",
+anger,1703.mp4,0.45455,"People leaving the bus, while one of the passengers punches the older bus driver in the face, before running of",FALSE,Quality,
+anger,0733.mp4,0.42857,"Footage of a Trump ralley, people holding up ""Make America First Again"" Signs",TRUE,,
+anger,1478.mp4,0.42857,"A Person beeing thrown out of their weelchair frontally, falling to their face ",FALSE,"Quality
+Doublicate with Sadness",
+anger,0414.mp4,0.42308,"Two cops sprinting into a holding cell and agressively throwing a female person to the ground, kicking, punching, pulling hair in the process",TRUE,,
+anger,0971.mp4,0.41667,Short clip of an officer grabbing a person out of their chair and throwing them to the ground,TRUE,,
+anger,0450.mp4,0.38462,A Terrorist group declaring that they swear to strike america in its centre in washington,FALSE,"Propagandistic Content
+Incitement of the People",
+anger,1844.mp4,0.38462,A skinhead with a swastica on his shirt bumping shoulders with two other people,TRUE,,
+anger,1922.mp4,0.38462,"An (already?) dead person lying on the ground, before beeing blown to pieces by two people using a handgun and a mashinegun",FALSE,"Depictions Violating Human Dignity
+Gratuitios Violence
+Severely Youth-Endangering Content
+Depictions of Violence",
+anger,0595.mp4,0.375,"A car dashcam showing a car driver slightly hitting a motorcyclist, making him drive into a streetsign and falling to the ground",TRUE,,
+anger,1026.mp4,0.36364,9/11,TRUE,,
+anger,1259.mp4,0.36364,"A dog covered in tar and dirt, lying on the ground",FALSE,Doublicate with Sadness,
+anger,1260.mp4,0.36364,"A person getting forcefully arrested, while another person protests in the background",TRUE,,
+disgust,0187.mp4,1,"A women laying on her stomache, puking on the floor",TRUE,,
+disgust,0235.mp4,1,A large pimple beeing poped with pus shooting out,TRUE,,
+disgust,0713.mp4,1,An elephant or rhinozeros shitting out large balls of poop,TRUE,,
+disgust,0876.mp4,1,An animal shiting out a liquid substance,TRUE,,
+disgust,0929.mp4,1,A monkey peeing in its own mouth,TRUE,,
+disgust,1044.mp4,1,"A person popping a pimple, with pus shooting out",TRUE,,
+disgust,1194.mp4,1,A Person opening a wound at his stomach with intestines spewing out,FALSE,Depictions Violating Human Dignity,severe physical suffering
+disgust,1425.mp4,1,A closeup of two feet with incredibly long toenails moving up and down,TRUE,,
+disgust,1441.mp4,1,"A closeup of a head of hair, where a worm sized chunk is beeing pulled out of the head. It leaves a small hole in the head where it was pulled out from",TRUE,,
+disgust,1685.mp4,1,"A large hole in bottom of a foot, which seems to be some sort of infection with small bugs crawling inside of it",FALSE,Depictions Violating Human Dignity,severe physical suffering
+disgust,1907.mp4,1,A closeup of a medical removel of some sort of rock which was implanted under the skin between the lips and the nose,TRUE,,
+disgust,1940.mp4,1,"A coffee dispenser which has two naked fat ladies where the coffee comes out, making it look like they are pooping into the cup",TRUE,,
+fear,1375.mp4,0.90909,A Person hanging on one hand at the edge of a building,TRUE,,
+fear,1422.mp4,0.84615,"A phone recording from inside a car, which is driving towards a large tornado",TRUE,,
+fear,0395.mp4,0.76923,A person balancing ontop of a large tower over a narrow flag like structure out of metal,TRUE,,
+fear,0025.mp4,0.75,A person playing the famous knife game,TRUE,,
+fear,1964.mp4,0.75,"3 People running from a flooding, while one person is captured by the wave",TRUE,,
+fear,0137.mp4,0.73333,"A person beeing held tightly by a large snake, trying to escape",TRUE,,
+fear,0687.mp4,0.72727,"A person filming a train, while another one passes milimeters next to him",TRUE,,
+fear,1779.mp4,0.72727,A Person standing hundrets of meters above a pool ready to jump,TRUE,,
+fear,0190.mp4,0.71429,A bodycam of a person standing very close to the edge of a skyscraper,TRUE,,
+fear,1172.mp4,0.71429,A bodycam of a person jumping across a gap on a skyscraper,TRUE,,
+joy,0688.mp4,0.72727,A dad with his child mimiking the childs pushup movements,TRUE,,
+joy,1032.mp4,0.72727,A baby smiling,TRUE,,
+joy,1034.mp4,0.72727,A daughter running towards her dad in military clothing,TRUE,,
+joy,2034.mp4,0.72727,A person almost crying hugging a person in a marine uniform,TRUE,,
+joy,1938.mp4,0.69231,A woman happily smiling hugging a man,TRUE,,
+joy,0380.mp4,0.66667,A kid happily bouncing around on a bouncy animal made of rubber,TRUE,,
+joy,1953.mp4,0.66667,A women jumping into the arms of a man,TRUE,,
+joy,0593.mp4,0.65625,A slow motion shot of a women turning around and bursting out with joy and excitement,TRUE,,
+joy,1712.mp4,0.64706,A series of images of a boy running to the back of the class and hugging a man in military uniform,TRUE,,
+joy,1363.mp4,0.63636,"A very excited baby, unboxing a present",TRUE,,
+sadness,1959.mp4,0.91667,An old women in the hospital crying,TRUE,,
+sadness,0756.mp4,0.90909,"A very ill looking baby, hooked up to hospital equipment, close to death",FALSE,Depictions Violating Human Dignity,
+sadness,1259.mp4,0.90909,"A dog covered in tar and dirt, lying on the ground",TRUE,,
+sadness,0975.mp4,0.83333,A very distressed dog at the grave of his owner,TRUE,,
+sadness,1786.mp4,0.81818,An naked and extremly skinny survivor of the holocaust is getting a coat,FALSE,Depictions Violating Human Dignity,"""Legitimate interest in this form of repoting"" is not applicable for this usecase"
+sadness,0051.mp4,0.8,a naked and extremly skinny survivor of the holocaust,FALSE,Depictions Violating Human Dignity,"""Legitimate interest in this form of repoting"" is not applicable for this usecase"
+sadness,0059.mp4,0.8,a dog who is unable to walk is trying to drag his paralyzed backlegs behind him,TRUE,,
+sadness,0067.mp4,0.77778,many very skinny survivors of the holocaust,FALSE,Depictions Violating Human Dignity,"""Legitimate interest in this form of repoting"" is not applicable for this usecase"
+sadness,0226.mp4,0.76923,a dog who has his paw stuck in a trap,TRUE,,
+sadness,1164.mp4,0.76923,a crying boy beeing comforted by a girl,TRUE,,
+sadness,0611.mp4,0.75,a priest finalizing the mariage between a dying man and his bride in the hospital,TRUE,,"most likely a film, not an ""actual event"""
+sadness,1478.mp4,0.75,"A Person beeing thrown out of their weelchair frontally, falling to their face ",FALSE,Quality,
+sadness,1587.mp4,0.75,A plane flying sideways and crashing into the ground in an explosion,TRUE,,
+sadness,0673.mp4,0.72727,a french memorial side with a lot of flowers,TRUE,,
+sadness,0181.mp4,0.71429,a person killing themself by jumping infront of a train,FALSE,"Depictions Violating Human Dignity
+Gratuitous Violence
+Severely Youth-Endangering Content",
+sadness,1485.mp4,0.71429,Drone Footage of a destroyed city,TRUE,,
+surprise,0509.mp4,0.75,a whale jumping out of the ocean right next to a few people on a boat,TRUE,,
+surprise,0976.mp4,0.75,a bird beeing attacked by a snake which suddenly appears,TRUE,,
+surprise,1277.mp4,0.66667,a predator fish jumping at another fish and eating it,TRUE,,
+surprise,1433.mp4,0.61538,"a girl sitting on a streat with the background falling down, revealing that the girl was at a totally different location",TRUE,,
+surprise,1436.mp4,0.61538,two men taking turns bouncing off of a gymnastics ball into a backflip,TRUE,,
+surprise,0468.mp4,0.58333,a hidden bird suddenly flying away,TRUE,,
+surprise,0602.mp4,0.58333,"a fridge getting opened, revealing a person eating inside",TRUE,,
+surprise,1002.mp4,0.58333,"a cylinder box, suddenly moving and before a ferret jumps out",TRUE,,
+surprise,1276.mp4,0.58333,"A dashcam of a car, where suddenly a person appears and gets hit by the car, flying / rolling away from the car and not moving",FALSE,"Depictions Violating Human Dignity
+Gratious Violence
+Severely Youth-Endangering Content",
+surprise,1899.mp4,0.58333,An ice bear coming from under water and scaring a girl and a dog,TRUE,,
+surprise,1234.mp4,0.54545,"A deer crashing into a bus, through the front window and then running around in the bus",TRUE,,

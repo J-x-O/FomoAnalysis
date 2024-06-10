@@ -33,7 +33,7 @@ def get_missing_models(video: VideoTarget):
 def get_existing_models(video: VideoTarget):
     return {k: v for k, v in models.items() if video.has_side_car(f"{k}.json")}
 
-def extract_frame_data(video: VideoTarget, skipp_existing: bool = False) -> ExtractedEmotionSet:
+def extract_frame_data(video: VideoTarget, skipp_existing: bool = False, console: bool = True) -> ExtractedEmotionSet:
     if skipp_existing and has_all_side_cars(video):
         print(f"Skipping {video.video_title} as all side cars are present.")
         return load_frame_data(video)
@@ -44,7 +44,7 @@ def extract_frame_data(video: VideoTarget, skipp_existing: bool = False) -> Extr
     for model_name in model_selection.keys():
         data[model_name] = []
 
-    for frame_index, frame in FrameIterator(video):
+    for frame_index, frame in FrameIterator(video, console=console):
         cropped = transform_stack(frame)
         for model_name, model in model_selection.items():
             with torch.no_grad():
@@ -74,8 +74,12 @@ def combine_frame_data(data: ExtractedEmotionSet) -> pd.DataFrame:
     for model_name, model_data in data.items():
         for i, frame in enumerate(model_data):
             for axis_index, axis in enumerate(class_names):
-                row_list.append([model_name, i, axis, frame[axis_index]])
-    return pd.DataFrame(row_list, columns=["model", "frame", "axis", "value"] )
+                row_list.append({
+                    "model": model_name,
+                    "frame": i,
+                    "axis": axis,
+                    "value": frame[axis_index]})
+    return pd.DataFrame(row_list)
 
 def load_frame_data(video: VideoTarget) -> ExtractedEmotionSet:
     loaded = {}
