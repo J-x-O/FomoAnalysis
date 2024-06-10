@@ -5,7 +5,7 @@ from matplotlib import pyplot
 from matplotlib.axes import Axes
 from seaborn import FacetGrid
 
-from src.DataConversion import remap, normalize_col, retrieve_compiled_video_logs
+from src.DataConversion import remap, normalize_col, retrieve_compiled_video_logs, load_timing_from_frames
 
 
 def plot_all():
@@ -99,11 +99,14 @@ def plot_video_watch_count() -> Axes:
 
 def plot_pre_reaction() -> Axes:
     df = retrieve_compiled_video_logs()
-    df = df[df["frame"] < 30]
-    # todo: check the fucking framerate of this shit ;-;
+    df = df[df["time_stamp"] < 3]
+    # find out the dominant emotion for each frame, of every video from every participant
+    # df = df.loc[df.groupby(["participant", "watched_video", "frame"])['value'].idxmax()]
+    return sns.lmplot(data=df, x="time_stamp", y="value", col="axis", hue="model", scatter_kws={"s": 20, "alpha": 0.1, "edgecolors": 'none'})
 
 
-all_plots = [plot_gender_distribution, plot_age_distribution,
-             plot_confusion_matrix, plot_video_watch_count,
-             plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution
-             ]
+
+all_plots = [# plot_gender_distribution, plot_age_distribution,
+             # plot_confusion_matrix, plot_video_watch_count,
+             # plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution,
+             plot_pre_reaction]

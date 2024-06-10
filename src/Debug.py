@@ -9,7 +9,7 @@ from networks.DDAMFNpp_affectnet7 import DDAMFNppAffectnet7
 from networks.DDAMFNpp_rafdb import DDAMFNppRAFDB
 from src.Consts import classes
 from src.RetinaFaceAlign import transform_stack
-from src.VideoUtil import FrameIterator, VideoTarget
+from src.VideoUtil import FrameIterator, VideoTarget, find_all_videos
 
 
 def test_full():

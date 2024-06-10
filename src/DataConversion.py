@@ -51,26 +51,38 @@ def compile_questionnaire(survey_objects: dict[str, dict]) -> pd.DataFrame:
             })
     return pd.DataFrame(row_list)
 
+
 def percentual_questionnaire(data: pd.DataFrame) -> pd.DataFrame:
     data["valence_percent"] = data["valence"].apply(lambda x: remap(x, 1, 7, 0, 1))
     data["arousal_percent"] = data["arousal"].apply(lambda x: remap(x, 1, 7, 0, 1))
     data["intensity_percent"] = data["intensity"].apply(lambda x: remap(x, 1, 7, 0, 1))
     return data
 
+
 def remap(value, old_min, old_max, new_min, new_max):
     return ( (value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min#
+
 
 def normalize_col(df: pd.DataFrame, key: str, from_to: (float, float)) -> pd.DataFrame:
     df[key] = df[key].apply(lambda x: remap(x, from_to[0], from_to[1], 0, 1))
     return df
 
 
-def retrieve_compiled_video_logs() -> pd.DataFrame:
+def retrieve_compiled_video_logs(load_timing: bool = True) -> pd.DataFrame:
     if not os.path.exists("data/compiled_video_logs.csv"):
         df = compile_video_logs()
         df.to_csv("data/compiled_video_logs.csv", index=False)
-        return df
-    return pd.read_csv("data/compiled_video_logs.csv")
+    else: df = pd.read_csv("data/compiled_video_logs.csv")
+
+    if load_timing: df = load_timing_from_frames(df)
+    return df
+
+
+def load_timing_from_frames(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.merge(pd.read_csv("data/frame_rates_average.csv"), on="participant")
+    df["time_stamp"] = df["frame"] / df["frame_rate_rounded"]
+    return df
+
 
 def compile_video_logs() -> pd.DataFrame:
     df = pd.read_csv("data/questionnaire.csv")

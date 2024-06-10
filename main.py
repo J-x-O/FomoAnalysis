@@ -1,6 +1,8 @@
-from src.DataConversion import load_survey_objects, compile_bias, compile_questionnaire, percentual_questionnaire, \
-    compile_video_logs
-from src.Graphs import plot_all
+import pandas as pd
+
+from src.DataConversion import load_survey_objects, compile_bias, compile_questionnaire, retrieve_compiled_video_logs
+from src.Graphs import *
+from src.VideoUtil import get_all_frame_rates, VideoTarget, get_frame_rate, average_frame_rates
 
 
 def do_stuff():
@@ -13,7 +15,6 @@ def do_stuff():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    df = retrieve_compiled_video_logs()
-    df.to_csv("data/compiled_video_logs.csv", index=False)
+    plot_all()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
