@@ -4,7 +4,7 @@ from typing import Union
 
 import pandas as pd
 
-from src.Consts import emotion_classes
+from src.Consts import emotion_classes_network
 from src.VideoUtil import VideoTarget
 
 
@@ -42,7 +42,7 @@ def combine_frame_data(data: ExtractedEmotionSet) -> pd.DataFrame:
     row_list = []
     for model_name, model_data in data.items():
         for i, frame in enumerate(model_data):
-            for axis_index, axis in enumerate(emotion_classes):
+            for axis_index, axis in enumerate(emotion_classes_network):
                 row_list.append({
                     "model": model_name,
                     "frame": i,

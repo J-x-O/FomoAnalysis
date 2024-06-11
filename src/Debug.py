@@ -9,7 +9,7 @@ from torchvision.utils import save_image
 
 from networks.DDAMFNpp_affectnet7 import DDAMFNppAffectnet7
 from networks.DDAMFNpp_rafdb import DDAMFNppRAFDB
-from src.Consts import emotion_classes
+from src.Consts import emotion_classes_network
 from src.RetinaFaceAlign import transform_stack
 from src.VideoUtil import FrameIterator, VideoTarget, find_all_videos
 
@@ -55,8 +55,8 @@ def plot_results(outputs: torch.Tensor):
     probabilities = torch.nn.functional.softmax(outputs, dim=1).cpu().numpy()
 
     plt.figure(figsize=(10, 5))
-    plt.bar(np.arange(len(emotion_classes)), probabilities[0], align='center', alpha=0.7)
-    plt.xticks(np.arange(len(emotion_classes)), emotion_classes, rotation=45)
+    plt.bar(np.arange(len(emotion_classes_network)), probabilities[0], align='center', alpha=0.7)
+    plt.xticks(np.arange(len(emotion_classes_network)), emotion_classes_network, rotation=45)
     plt.xlabel('Emotion')
     plt.ylabel('Probability')
     plt.title('Emotion Prediction Probabilities')
