@@ -1,6 +1,7 @@
 from tqdm import tqdm
 
-from src.FrameDataExtract import clear_cache, extract_frame_data, cache_frame_data,  has_all_side_cars
+from src.FrameData import cache_frame_data, has_all_side_cars, clear_cache
+from src.FrameDataExtract import extract_frame_data
 from src.VideoUtil import find_all_videos
 
 
@@ -19,4 +20,6 @@ def nuke_all():
 
 
 if __name__ == '__main__':
-   successive_face_analysis()
+    videos = find_all_videos("data/survey")
+    print(len(videos))
+    # successive_face_analysis()

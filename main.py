@@ -1,4 +1,7 @@
+import pandas as pd
+
 from src.DataConversion import load_survey_objects, compile_bias, compile_questionnaire, retrieve_compiled_video_logs
+from src.DataQuickAccess import filter_surprise_happiness_failed_mapping, filter_anger_failed_mapping
 from src.Graphs import *
 
 

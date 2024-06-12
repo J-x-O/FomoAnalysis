@@ -38,6 +38,9 @@ def plot_age_distribution() -> Axes:
 def plot_confusion_matrix() -> Axes:
     df = pd.read_csv("data/questionnaire.csv")
     conf_matrix = pd.crosstab(df['actual_category'], df['category'])
+    sorting = ['happiness', 'sadness', 'surprise', 'fear', 'disgust', 'anger', 'neutral']
+    conf_matrix = conf_matrix.reindex(sorted(conf_matrix.columns, key=lambda x: sorting.index(x)), axis=1)
+    conf_matrix = conf_matrix.reindex(sorted(conf_matrix.index, key=lambda x: sorting.index(x)), axis=0)
     return sns.heatmap(conf_matrix, annot=True)
 
 
@@ -73,30 +76,8 @@ def plot_arousal_distribution(): return plot_distribution("arousal")
 def plot_intensity_distribution(): return plot_distribution("intensity")
 def plot_distribution(key: str) -> Axes:
     df = pd.read_csv("data/questionnaire.csv")
-    sns.set_palette(palette_no_neutral)
-    return sns.kdeplot(df, x=key, hue="actual_category", hue_order=emotion_classes_og_dataset)
-
-
-def plot_true_valence_distribution(): return plot_true_distribution("valence")
-def plot_true_arousal_distribution(): return plot_true_distribution("arousal")
-def plot_true_distribution(key: str) -> Axes:
-    df = pd.read_csv("data/questionnaire.csv")
-    df = load_single_video_data(df, key, normalize=True)
-    sns.set_palette(palette_no_neutral)
-    return sns.kdeplot(df, x="true_" + key, hue="actual_category", hue_order=emotion_classes_og_dataset)
-
-
-def plot_valence_matching(): return plot_matching("valence")
-def plot_arousal_matching(): return plot_matching("arousal")
-def plot_matching(key: str) -> Axes:
-    df = pd.read_csv("data/questionnaire.csv")
-    df = normalize_col(df, key, (1, 7))
-    df = load_single_video_data(df, key, normalize=True)
-    df[key + "_diff"] = df[key] - df["true_" + key]
-    sns.set_palette(palette_no_neutral)
-    ax = sns.kdeplot(df, x=key + "_diff", hue="actual_category", hue_order=emotion_classes_og_dataset)
-    ax.axvline(x=0, color='black', linestyle='--')
-    return ax
+    sns.set_palette(palette_full)
+    return sns.kdeplot(df, x=key, hue="category", hue_order=emotion_classes_vote)
 
 
 def plot_relation_bias_valence() -> FacetGrid: return plot_relation_bias_key("valence")
@@ -110,6 +91,29 @@ def plot_relation_bias_key(key: str) -> FacetGrid:
     sns.set_palette(palette_no_neutral)
     g = sns.lmplot(data=df, x="bias", y=key, col="category", col_order=emotion_classes_og_dataset,
                    hue="category", hue_order=emotion_classes_og_dataset)
+    return g
+
+
+def plot_relation_gender_reaction() -> FacetGrid:
+    df = pd.read_csv("data/questionnaire.csv")
+    df = df.merge(pd.read_csv("data/bias.csv"), on="participant")
+    df = df.melt(id_vars=["participant", "watched_video", "demographic_gender", "category"],
+                 value_vars=["valence", "arousal", "intensity"], var_name="axis", value_name="rating")
+    sns.set_palette(palette_full)
+    g = sns.catplot(data=df, x="demographic_gender", y="rating", hue="category", hue_order=emotion_classes_vote,
+                    col="axis", kind="bar")
+    return g
+
+
+def plot_relation_age_reaction() -> FacetGrid:
+    df = pd.read_csv("data/questionnaire.csv")
+    df = df.merge(pd.read_csv("data/bias.csv"), on="participant")
+    df = df.melt(id_vars=["participant", "watched_video", "demographic_age", "category"],
+                 value_vars=["valence", "arousal", "intensity"], var_name="axis", value_name="rating")
+    sns.set_palette(palette_full)
+    g = sns.FacetGrid(df, col="axis", hue="category", hue_order=emotion_classes_vote)
+    g.map(sns.lineplot, "demographic_age", "rating", err_kws={"alpha": 0.1})
+    g.add_legend()
     return g
 
 
@@ -247,14 +251,12 @@ def plot_correct_guess_relation_gender() -> Axes:
     return ax
 
 
-
-# todo: bias, gender and age for both the facial expression and the actually felt emotion
-
 all_plots = [
     # plot_gender_distribution, plot_age_distribution,
     # plot_confusion_matrix,
-    # plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution,
-    plot_relation_bias_valence, plot_relation_bias_arousal, plot_relation_bias_intensity,
+    plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution,
+    # plot_relation_bias_valence, plot_relation_bias_arousal, plot_relation_bias_intensity,
+    # plot_relation_gender_reaction, plot_relation_age_reaction,
     # plot_video_watch_count,
     # plot_pre_reaction,
     # plot_all_reaction_fill,
