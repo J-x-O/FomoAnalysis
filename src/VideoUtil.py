@@ -67,10 +67,14 @@ def find_all_videos(workdir: str) -> list[VideoTarget]:
     result = []
     for root, dirs, files in os.walk(workdir):
         for file in files:
+            if file == "intel.webm": continue
             if file.endswith(".webm") or file.endswith(".mp4"):
                 result.append(VideoTarget(root, file))
     return result
 
+def cache_all_frame_rates():
+    df = average_frame_rates(get_all_frame_rates())
+    df.to_csv("data/frame_rates_average.csv", index=False)
 
 def get_all_frame_rates():
     frame_rates = []
@@ -112,6 +116,8 @@ def get_frame_rate(video: VideoTarget):
     # we need to calculate the expected duration from the reaction video
     df = pd.read_csv("data/reaction_videos_durations.csv")
     title = video.video_title.split("_")
+    if len(title) != 3:
+        raise Exception("Weird Videotitle: " + video.video_title)
     title = title[1] + "_" + title[2]
     match = df[(df["video"] == title)]
     if len(match) != 1:

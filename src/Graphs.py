@@ -41,8 +41,9 @@ def plot_confusion_matrix() -> Axes:
     sorting = ['happiness', 'sadness', 'surprise', 'fear', 'disgust', 'anger', 'neutral']
     conf_matrix = conf_matrix.reindex(sorted(conf_matrix.columns, key=lambda x: sorting.index(x)), axis=1)
     conf_matrix = conf_matrix.reindex(sorted(conf_matrix.index, key=lambda x: sorting.index(x)), axis=0)
-    return sns.heatmap(conf_matrix, annot=True)
-
+    ax = sns.heatmap(conf_matrix, annot=True)
+    plt.tight_layout()
+    return ax
 
 def load_single_video_data(df: pd.DataFrame, key: str, normalize: bool = False) -> pd.DataFrame:
     other = pd.read_csv("data/CowenKeltnerEmotionalVideos.csv") \
@@ -170,6 +171,39 @@ def plot_all_reaction_fill_by_original_category() -> FacetGrid:
                     col_order=emotion_classes_og_dataset)
     return g
 
+def plot_guess_per_participant() -> Axes:
+    df = retrieve_compiled_video_logs()
+    df = df[3 < df["time_stamp"]]
+    df = rename_participants(df, True)
+    sns.set_palette(palette_full)
+    fig, ax = pyplot.subplots(figsize=(22.0, 7.0))
+    ax = sns.histplot(data=df, x="participant", weights="value", hue="axis", hue_order=emotion_classes_network,
+                      multiple="dodge", ax=ax, shrink=.8)
+    return ax
+
+def plot_guess_per_video() -> Axes:
+    df = retrieve_compiled_video_logs()
+    df = df[3 < df["time_stamp"]]
+    df = order_by_emotion_class_og_dataset(df)
+    sns.set_palette(palette_full)
+    fig, ax = pyplot.subplots(figsize=(30.0, 7.0))
+    ax = sns.histplot(data=df, x="watched_video", weights="value", hue="axis", hue_order=emotion_classes_network,
+                      multiple="dodge", ax=ax, shrink=.8)
+    plt.xticks(rotation=45, ha='right')
+    return ax
+
+def plot_guess_relation_bias() -> FacetGrid:
+    df = retrieve_compiled_video_logs()
+    df = df[df["axis"] != "Neutral"]
+    df = df.merge(pd.read_csv("data/bias.csv"), on="participant")
+    df["bias"] = df.apply(lambda x: x["bias_" + network_to_vote(x["axis"])], axis=1)
+    classes = [x for x in emotion_classes_network if x != "Neutral"]
+    sns.set_palette(palette_no_neutral)
+    g = sns.lmplot(data=df, x="bias", y="value", col="axis", col_order=classes,
+                    hue="axis", hue_order=classes, scatter_kws={"alpha": 0.01, "edgecolors": 'none'})
+    g.add_legend()
+    return g
+
 
 def plot_most_confident_guess() -> FacetGrid:
     df = retrieve_compiled_video_logs()
@@ -203,6 +237,7 @@ def load_averaged_correct_guess_data() -> pd.DataFrame:
     video_info = df[["participant", "watched_video", "actual_category", "category", "valence", "arousal", "intensity"]].drop_duplicates()
     return df_grouped.merge(video_info, on=["participant", "watched_video"])
 
+#todo: sort by actual video order from the other dataset
 def plot_correct_guess_highest() -> Axes:
     df = load_averaged_correct_guess_data()
     df = order_by_emotion_class_og_dataset(df)
@@ -211,6 +246,27 @@ def plot_correct_guess_highest() -> Axes:
     ax = sns.barplot(data=df, x="watched_video", y="is_correct", hue="actual_category", ax=ax, hue_order=emotion_classes_og_dataset)
     plt.xticks(rotation=45, ha='right')
     return ax
+
+
+def rename_participants(df: pd.DataFrame, to_string: bool) -> pd.DataFrame:
+    bias = pd.read_csv("data/bias.csv")
+    all_participants = bias["participant"].tolist()
+    mapping = {participant: i + 1 if not to_string else f"{i + 1}" for i, participant in enumerate(all_participants)}
+    df["participant"] = df["participant"].map(mapping)
+    return df
+
+
+def plot_correct_guess_per_participant() -> Axes:
+    df = load_averaged_correct_guess_data()
+    df = order_by_emotion_class_og_dataset(df)
+    df = rename_participants(df, False)
+    fig, ax = pyplot.subplots(figsize=(22.0, 7.0))
+    sns.set_palette(palette_full)
+    ax = sns.barplot(data=df, x="participant", y="is_correct", hue="category", ax=ax, hue_order=emotion_classes_vote)
+    plt.tight_layout()
+    return ax
+
+
 
 
 def plot_correct_guess_relation_intensity() -> Axes: return plot_correct_guess_relation_by("intensity")
@@ -240,7 +296,7 @@ def plot_correct_guess_relation_age() -> Axes:
     df = load_averaged_correct_guess_data()
     df = df.merge(pd.read_csv("data/bias.csv"), on="participant")
     sns.set_palette(sns.color_palette("deep"))
-    ax = sns.lmplot(data=df, x="demographic_age", y="is_correct")
+    ax = sns.lmplot(data=df, x="demographic_age", y="is_correct", col="model")
     return ax
 
 def plot_correct_guess_relation_gender() -> Axes:
@@ -251,21 +307,22 @@ def plot_correct_guess_relation_gender() -> Axes:
     return ax
 
 
+#todo: plot everything again with the new data
 all_plots = [
     # plot_gender_distribution, plot_age_distribution,
     # plot_confusion_matrix,
-    plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution,
+    # plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution,
     # plot_relation_bias_valence, plot_relation_bias_arousal, plot_relation_bias_intensity,
     # plot_relation_gender_reaction, plot_relation_age_reaction,
     # plot_video_watch_count,
     # plot_pre_reaction,
-    # plot_all_reaction_fill,
-    # plot_all_reaction_fill_by_emotion,
-    # plot_all_reaction_fill_by_original_category,
+    # plot_all_reaction_fill, plot_all_reaction_fill_by_emotion, plot_all_reaction_fill_by_original_category,
+    # plot_guess_per_participant, plot_guess_per_video, plot_guess_relation_bias,
     # plot_most_confident_guess,
     # plot_correct_guess,
     # plot_correct_guess_highest,
+    # plot_correct_guess_per_participant,
     # plot_correct_guess_relation_intensity, plot_correct_guess_relation_valence, plot_correct_guess_relation_arousal,
     # plot_correct_guess_relation_bias,
-    # plot_correct_guess_relation_age, plot_correct_guess_relation_gender,
+    plot_correct_guess_relation_age, plot_correct_guess_relation_gender,
 ]

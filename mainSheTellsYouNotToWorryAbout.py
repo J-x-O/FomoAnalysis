@@ -20,6 +20,6 @@ def nuke_all():
 
 
 if __name__ == '__main__':
-    videos = find_all_videos("data/survey")
-    print(len(videos))
-    # successive_face_analysis()
+    # videos = find_all_videos("data/survey")
+    # print(len(videos))
+    successive_face_analysis()
