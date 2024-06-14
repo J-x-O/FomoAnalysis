@@ -61,3 +61,15 @@ def plot_results(outputs: torch.Tensor):
     plt.ylabel('Probability')
     plt.title('Emotion Prediction Probabilities')
     plt.show()
+
+def average_age():
+    data = pd.read_csv("data/bias.csv")
+    return data["demographic_age"].mean()
+
+def shortest_video():
+    df = pd.read_csv("data/reaction_videos_durations.csv")
+    return df["duration"].min()
+
+def longest_video():
+    df = pd.read_csv("data/reaction_videos_durations.csv")
+    return df["duration"].max()
