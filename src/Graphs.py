@@ -119,8 +119,10 @@ def plot_relation_age_reaction() -> FacetGrid:
 
 
 def order_by_emotion_class_og_dataset(df: pd.DataFrame) -> pd.DataFrame:
+    sorting = pd.read_csv("data/FomoVideoSorting.csv")
     df["actual_category_index"] = df["actual_category"].apply(lambda x: emotion_classes_og_dataset.index(x))
-    return df.sort_values(["actual_category_index", "watched_video"])
+    df["video_index"] = df["watched_video"].apply(lambda x: sorting.index[sorting["FileName"] == x][0])
+    return df.sort_values(["actual_category_index", "video_index"])
 
 def plot_video_watch_count() -> Axes:
     df = pd.read_csv("data/questionnaire.csv")
@@ -175,10 +177,16 @@ def plot_guess_per_participant() -> Axes:
     df = retrieve_compiled_video_logs()
     df = df[3 < df["time_stamp"]]
     df = rename_participants(df, True)
+    df = df.groupby(["participant", "axis"])["value"].sum().reset_index()
+    df["value"] = df["value"] / df.groupby("participant")["value"].transform("sum")
+    df["sorting"] = df["participant"].apply(lambda x: int(x))
+    df = df.sort_values("sorting")
     sns.set_palette(palette_full)
-    fig, ax = pyplot.subplots(figsize=(22.0, 7.0))
+    fig, ax = pyplot.subplots(figsize=(16.0, 7.0))
     ax = sns.histplot(data=df, x="participant", weights="value", hue="axis", hue_order=emotion_classes_network,
-                      multiple="dodge", ax=ax, shrink=.8)
+                      multiple="stack", ax=ax, shrink=.8)
+    ax.set_ylabel("Percentage")
+    plt.tight_layout()
     return ax
 
 def plot_guess_per_video() -> Axes:
@@ -237,7 +245,7 @@ def load_averaged_correct_guess_data() -> pd.DataFrame:
     video_info = df[["participant", "watched_video", "actual_category", "category", "valence", "arousal", "intensity"]].drop_duplicates()
     return df_grouped.merge(video_info, on=["participant", "watched_video"])
 
-#todo: sort by actual video order from the other dataset
+# todo: irgendwas wollte ich hiermit noch machen idk
 def plot_correct_guess_highest() -> Axes:
     df = load_averaged_correct_guess_data()
     df = order_by_emotion_class_og_dataset(df)
@@ -307,22 +315,22 @@ def plot_correct_guess_relation_gender() -> Axes:
     return ax
 
 
-#todo: plot everything again with the new data
 all_plots = [
-    # plot_gender_distribution, plot_age_distribution,
-    # plot_confusion_matrix,
-    # plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution,
-    # plot_relation_bias_valence, plot_relation_bias_arousal, plot_relation_bias_intensity,
-    # plot_relation_gender_reaction, plot_relation_age_reaction,
-    # plot_video_watch_count,
-    # plot_pre_reaction,
-    # plot_all_reaction_fill, plot_all_reaction_fill_by_emotion, plot_all_reaction_fill_by_original_category,
-    # plot_guess_per_participant, plot_guess_per_video, plot_guess_relation_bias,
-    # plot_most_confident_guess,
-    # plot_correct_guess,
-    # plot_correct_guess_highest,
-    # plot_correct_guess_per_participant,
-    # plot_correct_guess_relation_intensity, plot_correct_guess_relation_valence, plot_correct_guess_relation_arousal,
-    # plot_correct_guess_relation_bias,
+    plot_gender_distribution, plot_age_distribution,
+    plot_confusion_matrix,
+    plot_valence_comparison, plot_arousal_comparison, plot_intensity_distribution,
+    plot_relation_bias_valence, plot_relation_bias_arousal, plot_relation_bias_intensity,
+    plot_relation_gender_reaction, plot_relation_age_reaction,
+    plot_video_watch_count,
+    plot_pre_reaction,
+    plot_all_reaction_fill, plot_all_reaction_fill_by_emotion, plot_all_reaction_fill_by_original_category,
+    plot_guess_per_participant,
+    plot_guess_per_video, plot_guess_relation_bias,
+    plot_most_confident_guess,
+    plot_correct_guess,
+    plot_correct_guess_highest,
+    plot_correct_guess_per_participant,
+    plot_correct_guess_relation_intensity, plot_correct_guess_relation_valence, plot_correct_guess_relation_arousal,
+    plot_correct_guess_relation_bias,
     plot_correct_guess_relation_age, plot_correct_guess_relation_gender,
 ]

@@ -23,7 +23,7 @@ def do_stuff():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # plot_all()
-    print(shortest_video())
+    plot_all()
+    # print(shortest_video())
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
